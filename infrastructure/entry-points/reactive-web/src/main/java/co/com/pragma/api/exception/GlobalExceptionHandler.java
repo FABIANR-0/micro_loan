@@ -26,24 +26,22 @@ public class GlobalExceptionHandler implements WebExceptionHandler {
     @Override
     @NonNull
     public Mono<Void> handle(@NonNull ServerWebExchange exchange, @NonNull Throwable ex) {
+
         var response = exchange.getResponse();
 
-        return switch (ex) {
-            case ValidationException vex -> {
-                var errors = vex.getErrors().getAllErrors().stream()
+        return switch (ex.getClass().getSimpleName()) {
+            case "ValidationException" -> {
+                var exValidation = (ValidationException) ex;
+                var errors = exValidation.getErrors().getAllErrors().stream()
                         .map(DefaultMessageSourceResolvable::getDefaultMessage)
                         .toList();
                 errors.forEach(message -> log.error("Validation error: {}", message));
                 yield writeJson(response, HttpStatus.BAD_REQUEST, Map.of("errors", errors));
             }
-       /*     case ConflictException exception ->
-                    writeJson(response, HttpStatus.CONFLICT, Map.of("message", exception.getMessage()));
+            case "ResourceNotFoundException" ->
+                    writeJson(response, HttpStatus.NOT_FOUND, Map.of("message", ex.getMessage()));
 
-            case ResourceNotFound exception ->
-                    writeJson(response, HttpStatus.NOT_FOUND, Map.of("message", exception.getMessage()));
-*/
             default -> Mono.error(ex);
-
         };
     }
 

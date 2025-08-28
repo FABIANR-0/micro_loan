@@ -3,7 +3,7 @@ package co.com.pragma.model.loanapplication;
 import lombok.*;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Getter
 @Setter
@@ -15,7 +15,8 @@ public class LoanApplication {
     private BigDecimal amount;
     private Integer term; // en meses
     private String email;
+    private String dni;
     private Long statusId;
     private Long loanTypeId;
-    private LocalDateTime applicationDate;
+    private LocalDate applicationDate;
 }

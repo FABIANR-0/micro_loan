@@ -6,6 +6,7 @@ import co.com.pragma.r2dbc.entity.LoanTypeEntity;
 import co.com.pragma.r2dbc.helper.ReactiveAdapterOperations;
 import org.reactivecommons.utils.ObjectMapper;
 import org.springframework.stereotype.Repository;
+import reactor.core.publisher.Mono;
 
 @Repository
 public class LoanTypeReactiveRepositoryAdapter extends ReactiveAdapterOperations<
@@ -18,4 +19,9 @@ public class LoanTypeReactiveRepositoryAdapter extends ReactiveAdapterOperations
         super(repository, mapper, d -> mapper.map(d, LoanType.class));
     }
 
+    @Override
+    public Mono<LoanType> findLoanTypeById(Long loanTypeId) {
+        return repository.findById(loanTypeId)
+                .map(this::toEntity);
+    }
 }

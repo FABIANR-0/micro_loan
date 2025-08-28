@@ -1,6 +1,6 @@
 package co.com.pragma.logger;
 
-import co.com.pragma.model.util.LoggerGateway;
+import co.com.pragma.model.gateways.LoggerGateway;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -27,5 +27,10 @@ public class Slf4jUseCaseLogger implements LoggerGateway {
     @Override
     public void error(String message, Object... args) {
         log.error(message, args);
+    }
+
+    @Override
+    public void debug(String message, Object... args) {
+        log.debug(message, args);
     }
 }

@@ -6,6 +6,7 @@ import co.com.pragma.r2dbc.entity.LoanApplicationEntity;
 import co.com.pragma.r2dbc.helper.ReactiveAdapterOperations;
 import org.reactivecommons.utils.ObjectMapper;
 import org.springframework.stereotype.Repository;
+import reactor.core.publisher.Mono;
 
 @Repository
 public class LoanApplicationReactiveRepositoryAdapter extends ReactiveAdapterOperations<
@@ -18,4 +19,9 @@ public class LoanApplicationReactiveRepositoryAdapter extends ReactiveAdapterOpe
         super(repository, mapper, d -> mapper.map(d, LoanApplication.class));
     }
 
+    @Override
+    public Mono<LoanApplication> saveLoanApplication(LoanApplication loanApplication) {
+        return this.repository.save(this.toData(loanApplication))
+                .map(this::toEntity);
+    }
 }

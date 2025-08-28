@@ -9,7 +9,7 @@ import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Table("loan_application")
 @Data
@@ -38,5 +38,5 @@ public class LoanApplicationEntity {
     private Long loanTypeId;
 
     @Column("application_date")
-    private LocalDateTime applicationDate;
+    private LocalDate applicationDate;
 }
