@@ -1,5 +1,5 @@
 server:
-  port: 8080
+  port: 8081
 spring:
   application:
     name: "Loan"
@@ -28,7 +28,14 @@ springdoc:
   swagger-ui:
     path: /swagger-ui.html
     enabled: true
-
+adapters:
+  r2dbc:
+    host: localhost
+    port: 5432
+    database: micro_loan
+    schema: public
+    username: postgres
+    password: 1234
 logging:
   level:
     root: INFO
