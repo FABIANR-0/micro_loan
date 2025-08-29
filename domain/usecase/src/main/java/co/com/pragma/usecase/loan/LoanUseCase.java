@@ -39,7 +39,7 @@ public class LoanUseCase {
                     loanApplication.setEmail(user.getEmail());
                     logger.info("Email del usuario asignado: {}", user.getEmail());
                 })
-                .flatMap(user -> loanTypeRepository.findLoanTypeById(loanApplication.getLoanTypeId()))
+                .then(loanTypeRepository.findLoanTypeById(loanApplication.getLoanTypeId()))
                 .switchIfEmpty(Mono.error(new ResourceNotFoundException("El tipo de préstamo no existe")))
                 .doOnNext(type -> logger.info("Tipo de préstamo encontrado: {}", type.getName()))
                 .then(loanStatusRepository.findStatusByName("PENDIENTE"))
@@ -47,7 +47,7 @@ public class LoanUseCase {
                 .flatMap(statusId -> {
                     loanApplication.setStatusId(statusId);
                     loanApplication.setApplicationDate(LocalDate.now());
-                    logger.info("Preparando solicitud antes de guardar: {}", loanApplication);
+                    logger.info("Preparando solicitud antes de guardar");
                     return loanApplicationRepository.saveLoanApplication(loanApplication);
                 })
                 .doOnSuccess(saved -> logger.info("Solicitud guardada con éxito con id: {}", saved.getApplicationId()))

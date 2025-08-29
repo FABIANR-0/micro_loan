@@ -41,7 +41,11 @@ public class RouterRest {
                                             schema = @Schema(implementation = LoanRequest.class)
                                     )
                             ),
-                            responses = @ApiResponse(responseCode = "201", description = "Successful created loan")
+                            responses = {
+                                    @ApiResponse(responseCode = "201", description = "Successful created loan"),
+                                    @ApiResponse(responseCode = "400", description = "Invalid input"),
+                                    @ApiResponse(responseCode = "404", description = "Info not found")
+                            }
                     )
             )
     })

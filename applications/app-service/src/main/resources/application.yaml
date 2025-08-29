@@ -5,10 +5,6 @@ spring:
     name: "Loan"
   devtools:
     add-properties: false
-  h2:
-    console:
-      enabled: true
-      path: "/h2"
   profiles:
     include: null
 management:
@@ -20,23 +16,51 @@ management:
     health:
       probes:
         enabled: true
+  health:
+    circuitbreakers:
+      enabled: true
 cors:
   allowed-origins: "http://localhost:4200,http://localhost:8080"
 springdoc:
   api-docs:
-    path: /v3/api-docs
+    path: "/v3/api-docs"
   swagger-ui:
-    path: /swagger-ui.html
+    path: "/swagger-ui.html"
     enabled: true
 adapters:
   r2dbc:
-    host: localhost
+    host: "localhost"
     port: 5432
-    database: micro_loan
-    schema: public
-    username: postgres
+    database: "micro_loan"
+    schema: "public"
+    username: "postgres"
     password: 1234
 logging:
   level:
-    root: INFO
-    co.com.pragma: TRACE
+    root: "INFO"
+    co.com.pragma: "TRACE"
+adapter:
+  restconsumer:
+    timeout: 5000
+    url: "http://localhost:8080"
+resilience4j:
+  circuitbreaker:
+    instances:
+      testGet:
+        registerHealthIndicator: true
+        failureRateThreshold: 50
+        slowCallRateThreshold: 50
+        slowCallDurationThreshold: "2s"
+        permittedNumberOfCallsInHalfOpenState: 3
+        slidingWindowSize: 10
+        minimumNumberOfCalls: 10
+        waitDurationInOpenState: "10s"
+      testPost:
+        registerHealthIndicator: true
+        failureRateThreshold: 50
+        slowCallRateThreshold: 50
+        slowCallDurationThreshold: "2s"
+        permittedNumberOfCallsInHalfOpenState: 3
+        slidingWindowSize: 10
+        minimumNumberOfCalls: 10
+        waitDurationInOpenState: "10s"
